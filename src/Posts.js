@@ -11,9 +11,7 @@ export default class Posts extends Component {
             label: "Нажми меня" 
         };
       }
-    // dontPropagation(event){
-    //     event.stopPropagation();
-    // }
+    
  
     render() {
         const { waitSpinner, posts,addPost,addLabel } = this.props;
