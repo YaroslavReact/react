@@ -30,18 +30,27 @@ export default class PopupChangePost extends Component {
         const { posts,changePostId,handleChange } = this.props
         const { valueTitle,valueBody } = this.state
         e.preventDefault();
-        this.setState(state => ({changePost: {
+        Array.isArray(posts) ? this.setState(state => ({changePost: {
             title: valueTitle,
             body: valueBody,
             userId: posts.find(item => item.id === changePostId).userId,
             id: posts.find(item => item.id === changePostId).id
+        }}), () => handleChange(this.state.changePost)) : this.setState(state => ({changePost: {
+            title: valueTitle,
+            body: valueBody,
+            userId: posts.UserId,
+            id: posts.id
         }}), () => handleChange(this.state.changePost));      
     }
     componentWillMount(){
         const { posts,changePostId } = this.props
-        this.setState(state =>({
+        console.log( Array.isArray(posts))
+        Array.isArray(posts) ? this.setState(state =>({
             valueTitle: posts.find(item => item.id === changePostId).title,
             valueBody: posts.find(item => item.id === changePostId).body
+        })): this.setState(state =>({ 
+            valueTitle: posts.title,
+            valueBody: posts.body
         }));
     }   
     render() { 

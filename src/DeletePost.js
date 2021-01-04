@@ -16,9 +16,6 @@ import { Button } from 'semantic-ui-react'
                             <Button onClick={() => props.handleDelete()} id="deleteButton" >
                                 DELETE
                             </Button>
-                            {/* <button onClick={() => props.handleDelete()} className="deleteButton">
-                                DELETE
-                            </button>   */}
                     </div>
                 </div>
             </div>

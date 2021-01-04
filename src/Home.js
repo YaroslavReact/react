@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-// import  Example  from './Example';
-import  PostsDisplay  from './Posts';
-import Post from './Post';
+import  Posts  from './Posts';
 import './App.css';
 import PopupChangePost from './PopupChangePost';
 import DeletePost from './DeletePost';
 import PopupAddPost from './PopupAddPost';
-
 
   class Home extends Component {
     constructor(props) {
@@ -47,6 +44,7 @@ import PopupAddPost from './PopupAddPost';
      this.setState(state => ({ popupAddPost: true}))
     }
     changePost(postId){
+      this.setState(state => ({ popupChangePost: true , changePostId: postId  }))
     }
     async handleChange(changePost){
       const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
@@ -86,12 +84,10 @@ import PopupAddPost from './PopupAddPost';
           }   
     }
     async handleDelete(){
-      console.log('hist', this.props.history)
       const {  deleteId } = this.state;
       const deleteButton = document.getElementById("deleteButton");
       deleteButton.setAttribute("class" , "ui button loading");
       const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
-      const event = new Event("click")
   
       try {
         const response = await axios.delete(apiUrl + "/" + deleteId);
@@ -124,17 +120,15 @@ import PopupAddPost from './PopupAddPost';
               <PopupChangePost
                 closePopup={this.closePopup} 
                 handleChange={this.handleChange}
-                popupChangePost={popupChangePost}
                 changePostId={changePostId}
                 posts={posts}
               />
              )}
              {popupDelete && <DeletePost 
-                popupDelete={popupDelete}
                 closePopup={this.closePopup}
                 handleDelete={this.handleDelete}
              />}
-            <PostsDisplay 
+            <Posts 
                 waitSpinner={waitSpinner} 
                 posts={posts} 
                 changePost={this.changePost}

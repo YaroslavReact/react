@@ -6,14 +6,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render (){
+function App(props){
     return(  
            <Router>
             <Switch>
@@ -26,7 +21,6 @@ class App extends Component {
             </Switch>
           </Router> 
     )
-  };
 }
 
 export default App;
