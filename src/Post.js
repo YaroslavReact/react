@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Component,useState } from 'react';
+import React, { useState } from 'react';
 import DisplayOnePost from './DisplayOnePost';
 import PopupChangePost from './PopupChangePost';
 import DeletePost from './DeletePost';
@@ -15,7 +15,7 @@ import {
             userId: "",
             id: '',
         });
-        const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/posts');
+        const url = 'https://jsonplaceholder.typicode.com/posts';
         const [popups, setPopups] = useState({ popupChangePost: false, popupDelete: false });
         const [waitSpinner, setWaitSpinner] = useState(false);
         let history = useHistory();
@@ -94,8 +94,7 @@ import {
                 />
             </header>    
             </div>
-       
-         )
+        )
     }    
 
 export default Post;

@@ -1,59 +1,80 @@
-import React, { Component } from 'react'
+import React,{ useEffect,useState } from 'react'
 import cross from './cross.jpg'
 import { Button } from 'semantic-ui-react'
 
-export default class PopupChangePost extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            valueTitle: '',
-            valueBody: '',
-            changePost:{
-                title: "",
-                body: '',
-                userId: "",
-                id: '',
-            }
-        };
-        this.handleChangeTitle = this.handleChangeTitle.bind(this);
-        this.handleChangeBody = this.handleChangeBody.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-    handleChangeTitle(event) {
-        this.setState({valueTitle: event.target.value});
-     }
-    handleChangeBody(event) {
-        this.setState({valueBody: event.target.value});
-     }
-    handleChange(e){
-        const { posts,changePostId,handleChange } = this.props
-        const { valueTitle,valueBody } = this.state
-        e.preventDefault();
-        Array.isArray(posts) ? this.setState(state => ({changePost: {
-            title: valueTitle,
-            body: valueBody,
-            userId: posts.find(item => item.id === changePostId).userId,
-            id: posts.find(item => item.id === changePostId).id
-        }}), () => handleChange(this.state.changePost)) : this.setState(state => ({changePost: {
-            title: valueTitle,
-            body: valueBody,
-            userId: posts.UserId,
-            id: posts.id
-        }}), () => handleChange(this.state.changePost));      
-    }
-    componentWillMount(){
-        const { posts,changePostId } = this.props
-        console.log( Array.isArray(posts))
-        Array.isArray(posts) ? this.setState(state =>({
-            valueTitle: posts.find(item => item.id === changePostId).title,
-            valueBody: posts.find(item => item.id === changePostId).body
-        })): this.setState(state =>({ 
-            valueTitle: posts.title,
-            valueBody: posts.body
+export default function PopupChangePost(props) {
+    const [changePost, setChangePost] = useState({
+        title: '',
+        body: '',
+        userId: '',
+        id: '',
+    });
+    function handleChangeTitle(event) {
+        setChangePost( prevState => ({
+            ...prevState,
+            title: event.target.value 
         }));
-    }   
-    render() { 
-        const { closePopup } = this.props
+        defineId()
+     }
+    function handleChangeBody(event) {
+        setChangePost( prevState => ({
+            ...prevState,
+            body: event.target.value 
+        }));
+        defineId()
+     }
+    function handleChange(event){
+        const { handleChange } = props
+        event.preventDefault();
+        handleChange(changePost)      
+    }
+    function defineId(){
+        const { posts,changePostId } = props
+        if( Array.isArray(posts)){ 
+            setChangePost( prevState => ({
+                ...prevState,
+                userId: posts.find(item => item.id === changePostId).userId
+            }));
+            setChangePost( prevState => ({
+                ...prevState,
+                id: posts.find(item => item.id === changePostId).id 
+            }));
+        }else {
+            setChangePost( prevState => ({
+                ...prevState,
+                userId: posts.UserId
+            }));
+            setChangePost( prevState => ({
+                ...prevState,
+                id: posts.id 
+            }));
+        } 
+    }
+    useEffect(() => {
+        const { posts,changePostId } = props
+        console.log( Array.isArray(posts))
+        if (Array.isArray(posts)) { 
+            setChangePost( prevState => ({
+                ...prevState,
+                title: posts.find(item => item.id === changePostId).title
+            }));
+            setChangePost( prevState => ({
+                ...prevState,
+                body: posts.find(item => item.id === changePostId).body
+            }));
+        }else {
+            setChangePost( prevState => ({
+                ...prevState,
+                body: posts.title
+            }));
+            setChangePost( prevState => ({
+                ...prevState,
+                body: posts.body
+            }));
+        }
+    }, [ ] )
+    
+    const { closePopup } = props
         return (
             <div className="popup"> 
                 <div onClick={() => closePopup()} className="popupBody"></div>
@@ -62,11 +83,11 @@ export default class PopupChangePost extends Component {
                             <img onClick={() => closePopup()} className="cross" alt="cross" src={cross} />
                         </div>
                         <div className="popupForm">
-                            <form onSubmit={this.handleChange}>
+                            <form onSubmit={handleChange}>
                                 <p>Enter title</p>
-                                <textarea value={this.state.valueTitle} onChange={this.handleChangeTitle.bind(this)} className="textarea"/>
+                                <textarea value={changePost.title} onChange={handleChangeTitle} className="textarea"/>
                                 <p>Enter body</p>
-                                <textarea value={this.state.valueBody} onChange={this.handleChangeBody.bind(this)} className="textarea"/>
+                                <textarea value={changePost.body} onChange={handleChangeBody} className="textarea"/>
                                 <Button type="submit" id="changeButton" >
                                     Change Me
                                 </Button>
@@ -75,6 +96,6 @@ export default class PopupChangePost extends Component {
                  </div>
             </div>    
         )
-    }
+    
 }
 
