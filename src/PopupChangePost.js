@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import cross from './cross.jpg'
-import 'semantic-ui-css/semantic.min.css'
 import { Button } from 'semantic-ui-react'
 
 export default class PopupChangePost extends Component {
